@@ -29,20 +29,20 @@ option java_package = "com.exactpro.th2.dataprovider.grpc";
 service DataProvider {
 
 
-  rpc getEvent (EventID) returns (RptEvent) {
+  rpc getEvent (EventID) returns (EventData) {
   }
 
-  rpc getMessage (MessageID) returns (RptMessage) {
+  rpc getMessage (MessageID) returns (MessageData) {
   }
 
   rpc getMessageStreams (google.protobuf.Empty) returns (StringList) {
   }
 
-  rpc searchMessages (GrpcMessageSearchRequest) returns (stream StreamResponse) {
+  rpc searchMessages (MessageSearchRequest) returns (stream StreamResponse) {
 
   }
 
-  rpc searchEvents (GrpcEventSearchRequest) returns (stream StreamResponse) {
+  rpc searchEvents (EventSearchRequest) returns (stream StreamResponse) {
 
   }
 
@@ -65,7 +65,7 @@ service DataProvider {
   }
 }
 
-message RptEvent {
+message EventData {
   EventID event_id = 1;
   EventID parent_event_id = 2; // Event id of parent event. It is null for root event
   EventID batch_id = 3; // Event id of parent event. It is null for root event
@@ -81,7 +81,7 @@ message RptEvent {
 }
 
 
-message RptEventTreeNode {
+message EventMetadata {
   EventID event_id = 1;
   EventID parent_event_id = 2; // Event id of parent event. It is null for root event
   google.protobuf.Timestamp start_timestamp = 4;
@@ -91,7 +91,7 @@ message RptEventTreeNode {
 }
 
 
-message RptMessage {
+message MessageData {
   MessageID message_id = 1; // Message id should be unique in session
   ConnectionID session_id = 2;
   Direction direction = 3; // Transport direction.
@@ -190,9 +190,9 @@ message MessageSearchRequest {
 
 message StreamResponse {
   oneof data {
-    RptEvent event = 1;
-    RptMessage message = 2;
-    RptEventTreeNode event_tree_node = 3;
+    EventData event = 1;
+    MessageData message = 2;
+    EventMetadata event_metadata = 3;
     LastScannedObjectInfo last_scanned_object = 4;
   }
 }
