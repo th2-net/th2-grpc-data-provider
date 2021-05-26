@@ -38,7 +38,8 @@ service DataProvider {
   rpc getMessageStreams (google.protobuf.Empty) returns (StringList) {
   }
 
-  rpc searchSseMessages (GrpcMessageSearchRequest) returns (stream StreamResponse) {
+  rpc searchMessages (GrpcMessageSearchRequest) returns (stream StreamResponse) {
+
   }
 
   rpc searchSseEvents (GrpcEventSearchRequest) returns (stream StreamResponse) {
