@@ -69,7 +69,8 @@ message RptEvent {
   EventID event_id = 1;
   EventID parent_event_id = 2; // Event id of parent event. It is null for root event
   EventID batch_id = 3; // Event id of parent event. It is null for root event
-  bool isBatched = 4;
+  bool is_batched = 4;
+
   google.protobuf.Timestamp start_timestamp = 5;
   google.protobuf.Timestamp end_timestamp = 6;
   EventStatus successful = 7; // Aggregated status of current and children events which sync written.
