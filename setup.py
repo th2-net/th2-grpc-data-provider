@@ -113,7 +113,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Artem Lezgyan',
     author_email='artem.lezgyan@exactprosystems.com',
-    url='https://github.com/th2-net/th2-rpt-data-provider',
+    url='https://github.com/th2-net/th2-data-provider',
     license='Apache License 2.0',
     python_requires='>=3.7',
     install_requires=[
