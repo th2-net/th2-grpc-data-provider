@@ -176,7 +176,8 @@ message EventSearchRequest {
   repeated Filter filters = 10;
 }
 
-message GrpcMessageSearchRequest {
+message MessageSearchRequest {
+
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   MessageID resume_from_id = 3;
