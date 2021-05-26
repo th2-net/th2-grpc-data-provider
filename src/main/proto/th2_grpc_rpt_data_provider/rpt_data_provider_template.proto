@@ -162,7 +162,8 @@ message MatchRequest {
   repeated Filter filters = 3;
 }
 
-message GrpcEventSearchRequest {
+message EventSearchRequest {
+
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   EventID parent_event = 3;
