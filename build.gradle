@@ -16,7 +16,8 @@ targetCompatibility = 11
 ext {
     grpcVersion                 = '1.32.1'
     protobufVersion             = '3.13.0'
-    serviceGeneratorVersion     = '3.1.10'
+    serviceGeneratorVersion     = '3.1.12'
+
 
     genDir              = file("${project.rootDir}/src/gen")
     sharedDir           = file("${project.rootDir}/shared")
@@ -42,6 +43,8 @@ repositories {
 dependencies {
     api platform('com.exactpro.th2:bom:3.0.0')
 
+    api "com.exactpro.th2:grpc-common:3.1.2"
+
     api "com.google.protobuf:protobuf-java-util"
     api "io.grpc:grpc-stub"
     implementation "io.grpc:grpc-protobuf"
@@ -50,7 +53,7 @@ dependencies {
 
     implementation "javax.annotation:javax.annotation-api:1.3.2"
 
-    implementation "com.exactpro.th2:grpc-service-generator:${serviceGeneratorVersion}"
+    api "com.exactpro.th2:grpc-service-generator:${serviceGeneratorVersion}"
 }
 
 sourceSets {
@@ -93,8 +96,6 @@ protobuf {
         ofSourceSet('main')
     }
 }
-
-compileJava.dependsOn.add('generateProto')
 
 java {
     withJavadocJar()
@@ -194,5 +195,4 @@ signing {
 
 clean {
     delete genDir
-    delete sharedDir
 }
