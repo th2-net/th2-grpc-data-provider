@@ -154,6 +154,16 @@ enum TimeRelation {
   PREVIOUS = 1;
 }
 
+message Stream {
+  string session = 1;
+  Direction direction = 2;
+  MessageID last_id = 3;
+}
+
+message StreamsInfo {
+  repeated Stream streams = 1;
+}
+
 message MatchRequest {
   oneof id {
     EventID event_id = 1;
@@ -163,7 +173,6 @@ message MatchRequest {
 }
 
 message EventSearchRequest {
-
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   EventID parent_event = 3;
@@ -177,7 +186,6 @@ message EventSearchRequest {
 }
 
 message MessageSearchRequest {
-
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   MessageID resume_from_id = 3;
@@ -185,7 +193,8 @@ message MessageSearchRequest {
   google.protobuf.Int32Value result_count_limit = 5;
   StringList stream = 6;
   google.protobuf.BoolValue keep_open = 7;
-  repeated Filter filters = 8;
+  repeated MessageID resume_message_ids = 8;
+  repeated Filter filters = 9;
 }
 
 message StreamResponse {
@@ -194,5 +203,6 @@ message StreamResponse {
     MessageData message = 2;
     EventMetadata event_metadata = 3;
     LastScannedObjectInfo last_scanned_object = 4;
+    StreamsInfo stream_info = 5;
   }
 }
