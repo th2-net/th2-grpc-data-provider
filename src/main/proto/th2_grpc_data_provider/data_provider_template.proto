@@ -182,7 +182,8 @@ message EventSearchRequest {
   google.protobuf.BoolValue keep_open = 7;
   google.protobuf.Int64Value limit_for_parent = 8;
   google.protobuf.BoolValue metadata_only = 9;
-  repeated Filter filters = 10;
+  google.protobuf.BoolValue attached_messages = 10;
+  repeated Filter filters = 11;
 }
 
 message MessageSearchRequest {
