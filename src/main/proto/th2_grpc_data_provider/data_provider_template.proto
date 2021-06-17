@@ -76,7 +76,8 @@ service DataProvider {
   rpc  matchEvent (MatchRequest) returns (IsMatched) {
   }
 
-  /* Check that message with the specified id is matched by filter */
+  /* Checks that the message with the specified id is matched by the filter */
+
   rpc  matchMessage (MatchRequest) returns (IsMatched) {
   }
 }
