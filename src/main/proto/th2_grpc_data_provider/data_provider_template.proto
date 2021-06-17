@@ -40,7 +40,8 @@ service DataProvider {
   rpc getMessageStreams (google.protobuf.Empty) returns (StringList) {
   }
 
-  /* Create a stream of message that matches the filter. */
+  /* Creates a message stream that matches the filter. */
+
   rpc searchMessages (MessageSearchRequest) returns (stream StreamResponse) {
 
   }
