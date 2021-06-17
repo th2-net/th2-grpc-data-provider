@@ -71,7 +71,8 @@ service DataProvider {
   rpc getMessageFilterInfo (FilterName) returns (FilterInfo) {
   }
 
-  /* Check that event with the specified id is matched by filter */
+  /* Checks that the event with the specified id is matched by the filter */
+
   rpc  matchEvent (MatchRequest) returns (IsMatched) {
   }
 
