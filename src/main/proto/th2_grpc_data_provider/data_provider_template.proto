@@ -123,7 +123,8 @@ message MessageData {
   string body_base64 = 7;
 }
 
-/* Message and last scanned object. With a certain frequency (configured in the configuration),
+/* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
+
  * it is sent along with the found elements when searching searchMessages */
 
 message LastScannedObjectInfo {
