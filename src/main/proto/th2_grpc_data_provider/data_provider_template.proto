@@ -103,7 +103,8 @@ message EventData {
 
 message EventMetadata {
   EventID event_id = 1; // Current event id
-  EventID parent_event_id = 2; // Event id of parent event. It is null for root event
+  EventID parent_event_id = 2; // Event id of a parent event. It is null for root event
+
   google.protobuf.Timestamp start_timestamp = 4;
   EventStatus successful = 5; // Aggregated status of current and children events which sync written.
   string event_name = 6;
