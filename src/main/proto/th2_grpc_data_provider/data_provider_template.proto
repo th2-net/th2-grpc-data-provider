@@ -60,7 +60,8 @@ service DataProvider {
   rpc getEventsFilters (google.protobuf.Empty) returns (ListFilterName) {
   }
 
-  /* get filter info */
+  /* gets filter info */
+
   rpc getEventFilterInfo (FilterName) returns (FilterInfo) {
   }
 
