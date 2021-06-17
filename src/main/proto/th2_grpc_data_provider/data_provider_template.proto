@@ -56,7 +56,8 @@ service DataProvider {
   rpc getMessagesFilters (google.protobuf.Empty) returns (ListFilterName) {
   }
 
-  /* get all names of sse event filters */
+  /* gets all the names of sse event filters */
+
   rpc getEventsFilters (google.protobuf.Empty) returns (ListFilterName) {
   }
 
