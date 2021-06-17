@@ -51,7 +51,8 @@ service DataProvider {
 
   }
 
-  /* get all names of sse message filters */
+  /* gets all the names of sse message filters */
+
   rpc getMessagesFilters (google.protobuf.Empty) returns (ListFilterName) {
   }
 
