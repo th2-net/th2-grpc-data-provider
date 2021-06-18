@@ -230,7 +230,8 @@ message EventSearchRequest {
   EventID parent_event = 3; // Will match events with the specified parent element.
   TimeRelation search_direction = 4; // Sets the lookup direction. Can be used for pagination. Set by default to NEXT.
 
-  EventID resume_from_id = 5; // last event id. In order to continue the execution of an interrupted sse request, you need to send exactly the same request with an indication of the element ID, from which to resume data transfer. Defaults to null. One of the 'start_timestamp' or 'resume_from_id' must not be null
+  EventID resume_from_id = 5; // last event id. In order to continue the execution of an interrupted sse request, you need to send exactly the same request with an indication of the element ID, from which the data transfer will be resumed. Set by default to null. One of the 'start_timestamp' or 'resume_from_id' must not be null
+
   google.protobuf.Int32Value result_count_limit = 6; // Sets the maximum amount of events to return. Defaults to 100
   google.protobuf.BoolValue keep_open = 7; // If the search has reached the current moment, is it necessary to wait further for the appearance of new data. Default false
   google.protobuf.Int64Value limit_for_parent = 8; // How many children for each parent do we want to request. Default not limited
