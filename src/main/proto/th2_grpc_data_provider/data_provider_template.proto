@@ -254,7 +254,8 @@ message MessageSearchRequest {
   google.protobuf.Int32Value result_count_limit = 5; // Sets the maximum amount of messages to return. Defaults to 100
   StringList stream = 6; // Sets the stream ids to search in. Case-sensitive. Required.
   google.protobuf.BoolValue keep_open = 7; //  If the search has reached the current moment, is it necessary to wait further for the appearance of new data. Default false
-  repeated MessageID message_id = 8; // List of message IDs to restore search. If given, it has the highest priority and ignores 'stream' (uses streams from ids), 'start_timestamp' and 'resume_fromId'. Defaults to null
+  repeated MessageID message_id = 8; // List of message IDs to restore the search. If given, it has the highest priority and ignores 'stream' (uses streams from the ids), 'start_timestamp' and 'resume_fromId'. Set by default to null.
+
   repeated Filter filters = 9; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
 }
 
