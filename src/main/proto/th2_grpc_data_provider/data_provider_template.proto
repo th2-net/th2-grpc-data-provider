@@ -126,7 +126,8 @@ message MessageData {
 
 /* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
 
- * it is sent along with the found elements when searching searchMessages */
+ * it is sent along with the elements found when searching via searchMessages */
+
 
 message LastScannedObjectInfo {
   string id = 1; // Id of last scanned message or event
