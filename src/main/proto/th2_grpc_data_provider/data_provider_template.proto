@@ -46,7 +46,8 @@ service DataProvider {
 
   }
 
-  /* Create a stream of event or event metadata that matches the filter. */
+  /* Creates an event stream or event metadata that matches the filter. */
+
   rpc searchEvents (EventSearchRequest) returns (stream StreamResponse) {
 
   }
