@@ -46,7 +46,7 @@ service DataProvider {
 
   }
 
-  /* Creates an event stream or event metadata that matches the filter. */
+  /* Creates an event or an event metadata stream that matches the filter. */
 
   rpc searchEvents (EventSearchRequest) returns (stream StreamResponse) {
 
@@ -206,7 +206,7 @@ message Stream {
   MessageID last_id = 3;
 }
 
-/* List of streams containing information about all the streams */
+/* List of Stream objects containing information about all the streams */
 
 
 message StreamsInfo {
