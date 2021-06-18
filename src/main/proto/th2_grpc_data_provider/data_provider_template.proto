@@ -237,7 +237,8 @@ message EventSearchRequest {
 
   google.protobuf.BoolValue keep_open = 7; // If the search has reached the current moment, it is necessary to wait further for the appearance of new data. Set to false by default.
 
-  google.protobuf.Int64Value limit_for_parent = 8; // How many children for each parent do we want to request. Default not limited
+  google.protobuf.Int64Value limit_for_parent = 8; // How many children events for each parent do we want to request. Set by default to not limited.
+
   google.protobuf.BoolValue metadata_only = 9; //  Receive only metadata (true) or entire event (false) (without attachedMessageIds). Default true
   google.protobuf.BoolValue attached_messages = 10; // If the metadataOnly is false additionally load attachedMessageIds. Default false
   repeated Filter filters = 11; // List of event search filters. (See 'search/sse/events' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
