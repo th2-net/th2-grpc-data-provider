@@ -180,7 +180,8 @@ message FilterInfo {
   repeated Parameter parameters = 3;
 }
 
-/* A filter object passed in a message or event search request */
+/* A filter object passed in a message or an event search request */
+
 
 message Filter {
   FilterName name = 1;
