@@ -251,7 +251,8 @@ message MessageSearchRequest {
   google.protobuf.Timestamp end_timestamp = 2; // unix timestamp - Sets the timestamp to which the search will be performed, starting with 'start_timestamp'. When search_direction is 'previous', 'end_timestamp' must be less then 'start_timestamp'. Defaults to null (the search is carried out endlessly into the past or the future).
   MessageID resume_from_id = 3; // last message id. In order to continue the execution of an interrupted search request, you need to send exactly the same request with an indication of the element ID, from which to resume data transfer. Defaults to null. One of the 'start_timestamp' or 'resume_fromId' or 'message_id' must not be null
   TimeRelation search_direction = 4; // Sets the lookup direction. Can be used for pagination. Defaults to NEXT
-  google.protobuf.Int32Value result_count_limit = 5; // Sets the maximum amount of messages to return. Defaults to 100
+  google.protobuf.Int32Value result_count_limit = 5; // Sets the maximum amount of messages to return. Set by default to 100
+
   StringList stream = 6; // Sets the stream ids to search in. Case-sensitive. Required.
   google.protobuf.BoolValue keep_open = 7; //  If the search has reached the current moment, it is necessary to wait further for the appearance of new data. Set by default to false.
 
