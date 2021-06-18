@@ -205,7 +205,8 @@ message Stream {
   MessageID last_id = 3;
 }
 
-/* List of Stream containing information on all streams */
+/* List of streams containing information about all the streams */
+
 
 message StreamsInfo {
   repeated Stream streams = 1;
