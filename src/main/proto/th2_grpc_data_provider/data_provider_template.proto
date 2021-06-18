@@ -196,7 +196,8 @@ enum TimeRelation {
 }
 
 /* The object containing the data of the last message in the stream on which
- * the search stopped is necessary to continue the search from the same place */
+ * the search stopped, it is necessary to continue the search from the same place */
+
 
 message Stream {
   string session = 1;
