@@ -211,7 +211,8 @@ message StreamsInfo {
   repeated Stream streams = 1;
 }
 
-/* Check that event or message with the specified id is matched by filters */
+/* Checks that an event or a message with the specified id is matched by the filters */
+
 
 message MatchRequest {
   oneof id {
