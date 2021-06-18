@@ -226,7 +226,8 @@ message MatchRequest {
 
 message EventSearchRequest {
   google.protobuf.Timestamp start_timestamp = 1; // unix timestamp - Sets the search starting point. One of the 'start_timestamp' or 'resume_from_id' must not be null
-  google.protobuf.Timestamp end_timestamp = 2; // unix timestamp - Sets the timestamp to which the search will be performed, starting with 'start_timestamp'. When 'search_direction' is previous, end_timestamp must be less then start_timestamp. Defaults to null (the search is carried out endlessly into the past or the future).
+  google.protobuf.Timestamp end_timestamp = 2; // unix timestamp - Sets the timestamp to which the search will be performed, starting with 'start_timestamp'. When 'search_direction' is previous, end_timestamp must be less than start_timestamp. It is set by default to null (the search is carried out endlessly into the past or into the future).
+
   EventID parent_event = 3; // Will match events with the specified parent element.
   TimeRelation search_direction = 4; // Sets the lookup direction. Can be used for pagination. Set by default to NEXT.
 
