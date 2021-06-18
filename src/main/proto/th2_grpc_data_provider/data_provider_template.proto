@@ -86,7 +86,8 @@ service DataProvider {
 
 message EventData {
   EventID event_id = 1; // Current event id
-  EventID parent_event_id = 2; // Event id of parent event. It is null for root event
+  EventID parent_event_id = 2; // Event id of a parent event. It is null for root event
+
   EventID batch_id = 3; // Event id of parent event. It is null for root event
   bool is_batched = 4; // Flag indicating that the event is in batch
 
