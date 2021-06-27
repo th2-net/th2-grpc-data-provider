@@ -34,7 +34,7 @@ service DataProvider {
 
   /* returns a list of events with the specified ids */
   rpc getEvents (EventIds) returns (Events) {
-  }
+  } 
 
   /* returns a single message with the specified id */
   rpc getMessage (MessageID) returns (MessageData) {
