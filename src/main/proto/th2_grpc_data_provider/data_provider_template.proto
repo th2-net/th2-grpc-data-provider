@@ -189,6 +189,7 @@ message Filter {
   FilterName name = 1;
   google.protobuf.BoolValue negative = 2;
   repeated string values = 3;
+  google.protobuf.BoolValue conjunct = 4;
 }
 
 enum TimeRelation {
