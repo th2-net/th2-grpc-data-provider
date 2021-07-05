@@ -32,6 +32,10 @@ service DataProvider {
   rpc getEvent (EventID) returns (EventData) {
   }
 
+  /* returns a list of events with the specified ids */
+  rpc getEvents (EventIds) returns (Events) {
+  } 
+
   /* returns a single message with the specified id */
   rpc getMessage (MessageID) returns (MessageData) {
   }
@@ -114,6 +118,18 @@ message EventMetadata {
   string event_type = 7;
 }
 
+/* List of event ids */
+
+message EventIds {
+  repeated EventID ids = 1;
+}
+
+/* List of event data */
+
+message Events {
+  repeated EventData events = 1;
+}
+
 /* Full event data */
 
 message MessageData {
@@ -124,6 +140,7 @@ message MessageData {
   string message_type = 5; // Message type by dictionary
   string body = 6;
   string body_base64 = 7;
+  repeated EventID attached_event_ids = 8; // id of events depending on this message
 }
 
 /* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
@@ -265,6 +282,7 @@ message MessageSearchRequest {
 
   repeated MessageID message_id = 8; // List of message IDs to restore the search. If given, it has the highest priority and ignores 'stream' (uses streams from the ids), 'start_timestamp' and 'resume_fromId'. Set by default to null.
 
+  google.protobuf.BoolValue attached_events = 10; // If true, it will additionally load attachedEventsIds. Set by default to false.
   repeated Filter filters = 9; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
 }
 
