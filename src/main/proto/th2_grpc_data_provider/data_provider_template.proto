@@ -91,18 +91,18 @@ service DataProvider {
 
 message EventData {
   EventID event_id = 1; // Current event id
-  EventID parent_event_id = 2; // Event id of a parent event. It is null for root event
+  EventID parent_event_id = 2; // Event id of a parent event. It is absent for root event
 
-  EventID batch_id = 3; // Event id of a parent event. It is null for root event
+  EventID batch_id = 3; // Event id of a parent event. It is absent for root event
 
   bool is_batched = 4; // Flag indicating that the event is in batch
 
   google.protobuf.Timestamp start_timestamp = 5;
-  google.protobuf.Timestamp end_timestamp = 6;
+  google.protobuf.Timestamp end_timestamp = 6; // May be absent.
   EventStatus successful = 7; // Aggregated status of current and children events which sync written.
   string event_name = 8;
-  string event_type = 9;
-  bytes body = 10;
+  string event_type = 9; // May be absent.
+  bytes body = 10; // May be absent.
   repeated MessageID attached_message_ids = 11; // id of messages depending on this event
 }
 
@@ -110,7 +110,7 @@ message EventData {
 
 message EventMetadata {
   EventID event_id = 1; // Current event id
-  EventID parent_event_id = 2; // Event id of a parent event. It is null for root event
+  EventID parent_event_id = 2; // Event id of a parent event. It is absent for root event
 
   google.protobuf.Timestamp start_timestamp = 4;
   EventStatus successful = 5; // Aggregated status of current and children events which sync written.
@@ -138,8 +138,8 @@ message MessageData {
   Direction direction = 3; // Transport direction.
   google.protobuf.Timestamp timestamp = 4; // Message creation timestamp
   string message_type = 5; // Message type by dictionary
-  string body = 6;
-  string body_base64 = 7;
+  string body = 6; // May be absent.
+  string body_base64 = 7; // May be absent.
   repeated EventID attached_event_ids = 8; // id of events depending on this message
 }
 
@@ -221,7 +221,7 @@ enum TimeRelation {
 message Stream {
   string session = 1;
   Direction direction = 2;
-  MessageID last_id = 3;
+  MessageID last_id = 3; // May be absent if there are no more messages in the stream with the specified session and direction
 }
 
 /* List of Stream objects containing information about all the streams */
