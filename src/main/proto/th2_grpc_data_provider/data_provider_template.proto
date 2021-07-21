@@ -138,9 +138,10 @@ message MessageData {
   Direction direction = 3; // Transport direction.
   google.protobuf.Timestamp timestamp = 4; // Message creation timestamp
   string message_type = 5; // Message type by dictionary
-  string body = 6; // May be absent.
-  string body_base64 = 7; // May be absent.
+  string body = 6 [deprecated = true]; // May be absent.
+  string body_base64 = 7;  // May be absent.
   repeated EventID attached_event_ids = 8; // id of events depending on this message
+  Message message = 9; // May be absent.
 }
 
 /* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
