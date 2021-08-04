@@ -284,6 +284,7 @@ message MessageSearchRequest {
   repeated MessageID message_id = 8; // List of message IDs to restore the search. If given, it has the highest priority and ignores 'stream' (uses streams from the ids), 'start_timestamp' and 'resume_fromId'. By default it is absent.
 
   google.protobuf.BoolValue attached_events = 10; // If true, it will additionally load attachedEventsIds. Set by default to false.
+  google.protobuf.Int32Value lookup_limit_days = 11; // The number of days that will be viewed on the first request to get the one closest to the specified timestamp. By default it is absent - not limited to the past and up to the present moment to the future.
   repeated Filter filters = 9; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
 }
 
