@@ -130,15 +130,20 @@ message Events {
   repeated EventData events = 1;
 }
 
+message MessageBodyWrapper {
+  Message message = 1;
+  bool filtered = 2;
+}
+
+
 /* Full event data */
 
 message MessageData {
   MessageID message_id = 1; // Message id should be unique in session
   google.protobuf.Timestamp timestamp = 2; // Message creation timestamp
-  string message_type = 3; // Message type by dictionary
-  bytes body_raw = 4;
-  repeated EventID attached_event_ids = 5; // id of events depending on this message
-  Message message = 6; // May be absent.
+  bytes body_raw = 3;
+  repeated EventID attached_event_ids = 4; // id of events depending on this message
+  repeated MessageBodyWrapper messages = 5; // May be absent.
 }
 
 /* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
