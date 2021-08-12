@@ -41,7 +41,7 @@ service DataProvider {
   }
 
   /* returns a list of message stream names */
-  rpc getMessageStreams (google.protobuf.Empty) returns (StringList) {
+  rpc getMessageStreams (MessageStreamNamesRequest) returns (StringList) {
   }
 
   /* Creates a message stream that matches the filter. */
@@ -85,6 +85,13 @@ service DataProvider {
 
   rpc  matchMessage (MatchRequest) returns (IsMatched) {
   }
+}
+
+
+/* Session names request */
+
+message MessageStreamNamesRequest {
+
 }
 
 /* Full event data */
