@@ -130,11 +130,12 @@ message Events {
   repeated EventData events = 1;
 }
 
+/* Parsed message info */
+
 message MessageBodyWrapper {
   Message message = 1;
   bool filtered = 2;
 }
-
 
 /* Full event data */
 
