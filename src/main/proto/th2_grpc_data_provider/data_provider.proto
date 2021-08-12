@@ -20,7 +20,6 @@ import "th2_grpc_common/common.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "com.exactpro.th2.dataprovider.grpc";
@@ -58,12 +57,12 @@ service DataProvider {
 
   /* gets all the names of sse message filters */
 
-  rpc getMessagesFilters (google.protobuf.Empty) returns (ListFilterName) {
+  rpc getMessagesFilters (MessageFiltersRequest) returns (ListFilterName) {
   }
 
   /* gets all the names of sse event filters */
 
-  rpc getEventsFilters (google.protobuf.Empty) returns (ListFilterName) {
+  rpc getEventsFilters (EventFiltersRequest) returns (ListFilterName) {
   }
 
   /* gets filter info */
@@ -91,6 +90,18 @@ service DataProvider {
 /* Session names request */
 
 message MessageStreamNamesRequest {
+
+}
+
+/* Message filters request */
+
+message MessageFiltersRequest {
+
+}
+
+/* Event filters request */
+
+message EventFiltersRequest {
 
 }
 
