@@ -152,7 +152,7 @@ message Events {
 
 message MessageBodyWrapper {
   Message message = 1;
-  bool filtered = 2;
+  bool match = 2;
 }
 
 /* Full event data */
