@@ -28,86 +28,73 @@ option java_package = "com.exactpro.th2.dataprovider.grpc";
 service DataProvider {
 
   /* returns a single event with the specified id */
-  rpc getEvent (EventID) returns (EventData) {
+  rpc getEvent (EventID) returns (EventResponse) {
   }
 
   /* returns a list of events with the specified ids */
-  rpc getEvents (EventIds) returns (Events) {
+  rpc getEvents (BulkEventRequest) returns (BulkEventResponse) {
   }
 
   /* returns a single message with the specified id */
-  rpc getMessage (MessageID) returns (MessageData) {
+  rpc getMessage (MessageID) returns (MessageResponse) {
   }
 
   /* returns a list of message stream names */
-  rpc getMessageStreams (MessageStreamNamesRequest) returns (StreamList) {
+  rpc getMessageStreams (MessageStreamsRequest) returns (MessageStreamsResponse) {
   }
 
-  /* Creates a message stream that matches the filter. */
-
-  rpc searchMessages (MessageSearchRequest) returns (stream StreamResponse) {
-
-  }
-
-  /* Creates an event or an event metadata stream that matches the filter. */
-
-  rpc searchEvents (EventSearchRequest) returns (stream StreamResponse) {
+  /* creates a message stream that matches the filter. */
+  rpc searchMessages (MessageSearchRequest) returns (stream MessageSearchResponse) {
 
   }
 
-  /* gets all the names of sse message filters */
+  /* creates an event or an event metadata stream that matches the filter. */
+  rpc searchEvents (EventSearchRequest) returns (stream EventSearchResponse) {
 
-  rpc getMessagesFilters (MessageFiltersRequest) returns (ListFilterName) {
   }
 
-  /* gets all the names of sse event filters */
-
-  rpc getEventsFilters (EventFiltersRequest) returns (ListFilterName) {
+  /* returns available message filters */
+  rpc getMessagesFilters (MessageFiltersRequest) returns (FilterNamesResponse) {
   }
 
-  /* gets filter info */
-
-  rpc getEventFilterInfo (FilterName) returns (FilterInfo) {
+  /* returns available event filters */
+  rpc getEventsFilters (EventFiltersRequest) returns (FilterNamesResponse) {
   }
 
-  /* gets filter info */
-
-  rpc getMessageFilterInfo (FilterName) returns (FilterInfo) {
+  /* returns available filter parameters */
+  rpc getEventFilterInfo (FilterNameRequest) returns (FilterInfoResponse) {
   }
 
-  /* Checks that the event with the specified id is matched by the filter */
-
-  rpc  matchEvent (MatchRequest) returns (IsMatched) {
+  /* returns available filter parameters */
+  rpc getMessageFilterInfo (FilterNameRequest) returns (FilterInfoResponse) {
   }
 
-  /* Checks that the message with the specified id is matched by the filter */
+  /* checks if the specified event matches the filter */
+  rpc matchEvent (MatchRequest) returns (IsMatched) {
+  }
 
-  rpc  matchMessage (MatchRequest) returns (IsMatched) {
+  /* checks if the specified message matches the filter */
+  rpc matchMessage (MatchRequest) returns (IsMatched) {
   }
 }
 
-
-/* Session names request */
-
-message MessageStreamNamesRequest {
+message MessageStreamsRequest {
 
 }
 
-/* Message filters request */
+message MessageStreamsResponse {
+
+}
 
 message MessageFiltersRequest {
 
 }
 
-/* Event filters request */
-
 message EventFiltersRequest {
 
 }
 
-/* Full event data */
-
-message EventData {
+message EventResponse {
   EventID event_id = 1; // Current event id
   EventID parent_event_id = 2; // Event id of a parent event. It is absent for root event
 
@@ -124,40 +111,30 @@ message EventData {
   repeated MessageID attached_message_ids = 11; // id of messages depending on this event
 }
 
-/* Event metadata */
-
 message EventMetadata {
   EventID event_id = 1; // Current event id
   EventID parent_event_id = 2; // Event id of a parent event. It is absent for root event
 
-  google.protobuf.Timestamp start_timestamp = 4;
-  EventStatus status = 5; // Aggregated status of current and children events which sync written.
-  string event_name = 6;
-  string event_type = 7;
+  google.protobuf.Timestamp start_timestamp = 3;
+  EventStatus status = 4; // Aggregated status of current and children events which sync written.
+  string event_name = 5;
+  string event_type = 6;
 }
 
-/* List of event ids */
-
-message EventIds {
+message BulkEventRequest {
   repeated EventID ids = 1;
 }
 
-/* List of event data */
-
-message Events {
-  repeated EventData events = 1;
+message BulkEventResponse {
+  repeated EventResponse events = 1;
 }
-
-/* Parsed message info */
 
 message MessageBodyWrapper {
   Message message = 1;
   bool match = 2;
 }
 
-/* Full event data */
-
-message MessageData {
+message MessageResponse {
   MessageID message_id = 1; // Message id should be unique in session
   google.protobuf.Timestamp timestamp = 2; // Message creation timestamp
   bytes body_raw = 3;
@@ -165,116 +142,58 @@ message MessageData {
   repeated MessageBodyWrapper messages = 5; // May be absent.
 }
 
-/* Message and last scanned object. With a certain frequency (this can be configured in the configuration options),
-
- * it is sent along with the elements found when searching via searchMessages */
-
-
-message LastScannedObjectInfo {
-  oneof id { // Id of last scanned message or event
-    MessageID message_id = 1;
-    EventID event_id = 2;
-  }
-  google.protobuf.Timestamp timestamp = 3; // Timestamp of message or event
-  int64 scan_counter = 4; // Number of objects already scanned
-}
-
-/* Information about stream */
-
-message StreamName {
-  string name = 1;         // Case sensitive. Required.
-  Direction direction = 2; // Required.
-}
-
-/* List of streams */
-
-message StreamList {
-  repeated StreamName stream_list = 1;
-}
-
-/* Response of match request */
-
-message IsMatched {
-  bool is_matched = 1;
-}
-
-/* Filtering data types */
-
-enum FilterParameterType {
-  NUMBER = 0;
-  BOOLEAN = 1;
-  STRING = 2;
-  STRING_LIST = 3;
+message FilterNameRequest {
+  FilterName filter_name = 1;
 }
 
 message FilterName {
-  string filter_name = 1;
+  string name = 1;
 }
 
-message ListFilterName {
-  repeated FilterName filter_names = 1;
+message FilterNamesResponse {
+  repeated FilterName filter_name = 1;
 }
 
-message Parameter {
+message FilterParameter {
   string name = 1;
   FilterParameterType type = 2;
   google.protobuf.Any default_value = 3;
   string hint = 4;
 }
 
+enum FilterParameterType {
+  NUMBER = 1;
+  BOOLEAN = 2;
+  STRING = 3;
+  STRING_LIST = 4;
+}
 
-/* Complete information about a specific filter */
-
-message FilterInfo {
+message FilterInfoResponse {
   FilterName name = 1;
   string hint = 2;
-  repeated Parameter parameters = 3;
+  repeated Parameter parameter = 3;
 }
 
-/* A filter object passed in a message or an event search request */
-
-
-message Filter {
-  FilterName name = 1;
-  google.protobuf.BoolValue negative = 2;
-  repeated string values = 3;
-  google.protobuf.BoolValue conjunct = 4;
-}
-
-enum TimeRelation {
-  NEXT = 0;
-  PREVIOUS = 1;
-}
-
-/* The object containing the data of the last message in the stream on which
- * the search stopped, it is necessary to continue the search from the same place */
-
-
-message Stream {
-  string session = 1;
-  Direction direction = 2;
-  MessageID last_id = 3; // May be absent if there are no more messages in the stream with the specified session and direction
-}
-
-/* List of Stream objects containing information about all the streams */
-
-
-message StreamsInfo {
-  repeated Stream streams = 1;
-}
-
-/* Checks that an event or a message with the specified id is matched by the filters */
-
-
-message MatchRequest {
-  oneof id {
-    EventID event_id = 1;
-    MessageID message_id = 2;
-  }
+message MessageMatchRequest {
+  MessageID message_id = 2;
   repeated Filter filters = 3;
 }
 
-/* Event search request */
+message EventMatchRequest {
+  EventID event_id = 1;
+  repeated Filter filters = 3;
+}
+
+message MatchResponse {
+  bool match = 1;
+}
+
+message Filter {
+  FilterName name = 1;
+  bool negative = 2;
+  repeated string values = 3;
+  bool conjunct = 4;
+}
 
 message EventSearchRequest {
   google.protobuf.Timestamp start_timestamp = 1; // unix timestamp - Sets the search starting point. One of the 'start_timestamp' or 'resume_from_id' must not absent
@@ -298,7 +217,19 @@ message EventSearchRequest {
   repeated Filter filters = 11; // List of event search filters. (See 'search/sse/events' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
 }
 
-/* Message search request */
+message EventSearchResponse {
+  oneof data {
+    EventResponse event = 1;
+    EventMetadata event_metadata = 2;
+    EventStreamPointer event_stream_pointer = 3;
+  }
+}
+
+message EventStreamPointer {
+  bool has_started = 1;
+  bool has_ended = 2;
+  EventID last_id = 3;
+}
 
 message MessageSearchRequest {
   google.protobuf.Timestamp start_timestamp = 1; // unix timestamp - Sets the search starting point. One of the 'start_timestamp' or 'resume_from_id' or 'message_id' must not absent
@@ -308,24 +239,41 @@ message MessageSearchRequest {
 
   google.protobuf.Int32Value result_count_limit = 4; // Sets the maximum amount of messages to return. By default it is absent (unlimited)
 
-  StreamList stream = 5; // Sets the stream names and directions to search in. Case-sensitive. Required.
+  repeated MessageStream stream = 5; // Sets the stream names and directions to search in. Case-sensitive. Required.
   google.protobuf.BoolValue keep_open = 6; //  If the search has reached the current moment, it is necessary to wait further for the appearance of new data. Set by default to false.
 
-  repeated MessageID resume_from_ids = 7; // List of message IDs to restore the search. If given, it has the highest priority and ignores 'stream' (uses streams from the ids), 'start_timestamp' and 'resume_fromId'. By default it is absent.
+  repeated MessageStreamPointer stream_pointer = 7; // List of stream pointers to restore the search from. start_timestamp will be ignored if this parameter is specified. By default it is absent.
 
   repeated Filter filters = 8; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
   google.protobuf.BoolValue attached_events = 9; // If true, it will additionally load attachedEventsIds. Set by default to false.
-  google.protobuf.Int32Value lookup_limit_days = 10; // The number of days that will be viewed on the first request to get the one closest to the specified timestamp. By default it is absent - not limited to the past and up to the present moment to the future.
 }
 
-/* The object returned by the search function (searchMessages/searchEvents) */
-
-message StreamResponse {
+message MessageSearchResponse {
   oneof data {
-    EventData event = 1;
-    MessageData message = 2;
-    EventMetadata event_metadata = 3;
-    LastScannedObjectInfo last_scanned_object = 4;
-    StreamsInfo stream_info = 5;
+    MessageResponse message = 1;
+    MessageStreamPointers message_stream_pointers = 2;
   }
+}
+
+message MessageStreamPointers {
+  repeated MessageStreamPointer message_stream_pointer = 1;
+}
+
+/* This object contains the data of the last message in the stream on which
+ * the search has stopped, it is necessary to continue the search from the same point */
+ message MessageStreamPointer {
+  MessageStream message_stream = 1;
+  bool has_started = 2;
+  bool has_ended = 3;
+  MessageID last_id = 4; // Might be abscent if the stream has no messages
+}
+
+message MessageStream {
+  string name = 1; // Case sensitive. Required.
+  Direction direction = 2; // Required.
+}
+
+enum TimeRelation {
+  NEXT = 1;
+  PREVIOUS = 2;
 }
