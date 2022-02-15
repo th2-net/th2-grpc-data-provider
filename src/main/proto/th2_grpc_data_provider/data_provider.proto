@@ -40,7 +40,7 @@ service DataProvider {
   }
 
   /* returns a list of message stream names */
-  rpc getMessageStreams (MessageStreamNamesRequest) returns (StringList) {
+  rpc getMessageStreams (MessageStreamNamesRequest) returns (StreamList) {
   }
 
   /* Creates a message stream that matches the filter. */
@@ -179,10 +179,17 @@ message LastScannedObjectInfo {
   int64 scan_counter = 4; // Number of objects already scanned
 }
 
-/* List of strings */
+/* Information about stream */
 
-message StringList {
-  repeated string list_string = 1;
+message StreamName {
+  string name = 1;         // Case sensitive. Required.
+  Direction direction = 2; // Required.
+}
+
+/* List of streams */
+
+message StreamList {
+  repeated StreamName stream_list = 1;
 }
 
 /* Response of match request */
@@ -301,7 +308,7 @@ message MessageSearchRequest {
 
   google.protobuf.Int32Value result_count_limit = 4; // Sets the maximum amount of messages to return. By default it is absent (unlimited)
 
-  StringList stream = 5; // Sets the stream ids to search in. Case-sensitive. Required.
+  StreamList stream = 5; // Sets the stream names and directions to search in. Case-sensitive. Required.
   google.protobuf.BoolValue keep_open = 6; //  If the search has reached the current moment, it is necessary to wait further for the appearance of new data. Set by default to false.
 
   repeated MessageID resume_from_ids = 7; // List of message IDs to restore the search. If given, it has the highest priority and ignores 'stream' (uses streams from the ids), 'start_timestamp' and 'resume_fromId'. By default it is absent.
