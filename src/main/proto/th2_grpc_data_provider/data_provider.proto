@@ -82,10 +82,6 @@ message MessageStreamsRequest {
 
 }
 
-message MessageStreamsResponse {
-
-}
-
 message MessageFiltersRequest {
 
 }
@@ -162,26 +158,26 @@ message FilterParameter {
 }
 
 enum FilterParameterType {
-  NUMBER = 1;
-  BOOLEAN = 2;
-  STRING = 3;
-  STRING_LIST = 4;
+  NUMBER = 0;
+  BOOLEAN = 1;
+  STRING = 2;
+  STRING_LIST = 3;
 }
 
 message FilterInfoResponse {
   FilterName name = 1;
   string hint = 2;
-  repeated Parameter parameter = 3;
+  repeated FilterParameter parameter = 3;
 }
 
 message MessageMatchRequest {
-  MessageID message_id = 2;
-  repeated Filter filter = 3;
+  MessageID message_id = 1;
+  repeated Filter filter = 2;
 }
 
 message EventMatchRequest {
   EventID event_id = 1;
-  repeated Filter filter = 3;
+  repeated Filter filter = 2;
 }
 
 message MatchResponse {
@@ -273,7 +269,11 @@ message MessageStream {
   Direction direction = 2; // Required.
 }
 
+message MessageStreamsResponse {
+  repeated MessageStream messageStream = 1;
+}
+
 enum TimeRelation {
-  NEXT = 1;
-  PREVIOUS = 2;
+  NEXT = 0;
+  PREVIOUS = 1;
 }
