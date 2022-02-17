@@ -16,6 +16,8 @@
 
 syntax = "proto3";
 
+package th2.data_provider;
+
 import "th2_grpc_common/common.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
