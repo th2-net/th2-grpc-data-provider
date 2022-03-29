@@ -224,8 +224,10 @@ message EventSearchResponse {
 }
 
 message EventStreamPointer {
-  bool has_started = 1;
-  bool has_ended = 2;
+                              // These flags indicate the state of the stream.
+  bool has_started = 1;       // There is data that matches our request.
+  bool has_ended = 2;         // All of the relevant data was already processed and there is nothing left.
+
   EventID last_id = 3;
 }
 
