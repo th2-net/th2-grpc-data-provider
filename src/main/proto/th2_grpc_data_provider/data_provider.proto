@@ -47,12 +47,16 @@ service DataProvider {
 
   /* creates a message stream that matches the filter. */
   rpc searchMessages (MessageSearchRequest) returns (stream MessageSearchResponse) {
-
   }
 
   /* creates an event or an event metadata stream that matches the filter. */
   rpc searchEvents (EventSearchRequest) returns (stream EventSearchResponse) {
+  }
 
+  /*
+  Searches for messages groups in specified timestamp
+   */
+  rpc searchMessageGroups (MessageGroupsSearchRequest) returns (stream MessageSearchResponse){
   }
 
   /* returns available message filters */
@@ -78,6 +82,15 @@ service DataProvider {
   /* checks if the specified message matches the filter */
   rpc matchMessage (MessageMatchRequest) returns (MatchResponse) {
   }
+}
+
+message MessageGroupsSearchRequest {
+  message Group {
+    string name = 1;
+  }
+  google.protobuf.Timestamp start_timestamp = 1;
+  google.protobuf.Timestamp end_timestamp = 2;
+  repeated Group message_group = 3;
 }
 
 message MessageStreamsRequest {
