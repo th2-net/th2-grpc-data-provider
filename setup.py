@@ -59,6 +59,7 @@ class ProtoGenerator(Command):
             command = ['grpc_tools.protoc'] + \
                       protos_include + \
                       ['--python_out={}'.format(gen_path), '--grpc_python_out={}'.format(gen_path)] + \
+                      [f'--mypy_out={gen_path}'] + \
                       [proto_file]
 
             if protoc.main(command) != 0:
@@ -74,6 +75,7 @@ class CustomDist(sdist):
         copy_tree(f'src/gen/main/python/{package_name}', package_name)
         copy_tree(f'src/gen/main/services/python/{package_name}', package_name)
         Path(f'{package_name}/__init__.py').touch()
+        Path(f'{package_name}/py.typed').touch()
 
         def make_packages(root_dir):
             for path in Path(root_dir).iterdir():
@@ -85,7 +87,8 @@ class CustomDist(sdist):
 
         self.distribution.packages = [''] + find_packages(include=[package_name, f'{package_name}.*'])
         self.distribution.package_data = {'': ['package_info.json'],
-                                          **dict.fromkeys(self.distribution.packages[1:], ['*.proto'])}
+                                          **dict.fromkeys(self.distribution.packages[1:],
+                                                          ['*.proto', 'py.typed', '*.pyi'])}
 
         sdist.run(self)
 
@@ -102,7 +105,8 @@ with open('README.md', 'r') as file:
     long_description = file.read()
 
 packages = [''] + find_packages(include=[package_name, f'{package_name}.*'])
-package_data = {'': ['package_info.json'], **dict.fromkeys(packages[1:], ['*.proto'])}
+package_data = {'': ['package_info.json'],
+                **dict.fromkeys(packages[1:], ['*.proto', 'py.typed', '*.pyi'])}
 
 
 setup(
@@ -111,13 +115,14 @@ setup(
     description=package_name,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    author='Artem Lezgyan',
-    author_email='artem.lezgyan@exactprosystems.com',
+    author='TH2-devs',
+    author_email='th2-devs@exactprosystems.com',
     url='https://github.com/th2-net/th2-data-provider',
     license='Apache License 2.0',
     python_requires='>=3.7',
     install_requires=[
-        'th2-grpc-common~=3.1.2'
+        'th2-grpc-common>=3,<4',
+        'mypy-protobuf==3.2'
     ],
     packages=packages,
     package_data=package_data,
