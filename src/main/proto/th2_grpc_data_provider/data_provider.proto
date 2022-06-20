@@ -88,6 +88,11 @@ service DataProvider {
   }
 }
 
+// The scope for events to request
+message EventScope {
+  string name = 1;
+}
+
 message BookId {
   // Name of the book to request data from
   string name = 1;
@@ -242,6 +247,8 @@ message EventSearchRequest {
   repeated Filter filter = 11; // List of event search filters. (See 'search/sse/events' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
 
   BookId book_id = 12;
+
+  EventScope scope = 13;
 }
 
 message EventSearchResponse {
