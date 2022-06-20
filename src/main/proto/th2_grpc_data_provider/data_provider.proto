@@ -45,6 +45,10 @@ service DataProvider {
   rpc getMessageStreams (MessageStreamsRequest) returns (MessageStreamsResponse) {
   }
 
+  // Returns the set of books stored in cradle cache
+  rpc getBooks(BooksRequest) returns (BooksResponse) {
+  }
+
   /* creates a message stream that matches the filter. */
   rpc searchMessages (MessageSearchRequest) returns (stream MessageSearchResponse) {
   }
@@ -84,12 +88,18 @@ service DataProvider {
   }
 }
 
+message BookId {
+  // Name of the book to request data from
+  string name = 1;
+}
+
 message MessageGroupsSearchRequest {
   message Group {
     string name = 1;
   }
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
+  BookId book_id = 7;
   repeated Group message_group = 3;
   google.protobuf.BoolValue sort = 4;
   bool raw_only = 5;
@@ -97,7 +107,7 @@ message MessageGroupsSearchRequest {
 }
 
 message MessageStreamsRequest {
-
+  BookId book_id = 1;
 }
 
 message MessageFiltersRequest {
@@ -152,7 +162,7 @@ message MessageGroupResponse {
   MessageID message_id = 1; // Message id should be unique in session
   google.protobuf.Timestamp timestamp = 2; // Message creation timestamp
   bytes body_raw = 3 [deprecated = true];
-  RawMessage rawMessage = 6;
+  RawMessage raw_message = 6;
   repeated EventID attached_event_id = 4; // ids of events linked to this message group
   repeated MessageGroupItem message_item = 5; // May be absent.
 }
@@ -230,6 +240,8 @@ message EventSearchRequest {
   google.protobuf.BoolValue attached_messages = 10; // If the metadataOnly is false, it will additionally load attachedMessageIds. Set by default to false.
 
   repeated Filter filter = 11; // List of event search filters. (See 'search/sse/events' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
+
+  BookId book_id = 12;
 }
 
 message EventSearchResponse {
@@ -263,7 +275,8 @@ message MessageSearchRequest {
 
   repeated Filter filter = 8; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
   google.protobuf.BoolValue attached_events = 9; // If true, it will additionally load attachedEventsIds. Set by default to false.
-  repeated string responseFormats = 10; // List of possible response formats (e.g. PARSED or BASE_64)
+  repeated string response_formats = 10; // List of possible response formats (e.g. PARSED or BASE_64)
+  BookId book_id = 11;
 }
 
 message MessageSearchResponse {
@@ -292,10 +305,17 @@ message MessageStream {
 }
 
 message MessageStreamsResponse {
-  repeated MessageStream messageStream = 1;
+  repeated MessageStream message_stream = 1;
 }
 
 enum TimeRelation {
   NEXT = 0;
   PREVIOUS = 1;
+}
+
+message BooksRequest {
+}
+
+message BooksResponse {
+  repeated BookId book_ids = 1;
 }
