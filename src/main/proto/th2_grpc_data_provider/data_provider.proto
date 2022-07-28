@@ -150,7 +150,8 @@ message MessageGroupItem {
 message MessageGroupResponse {
   MessageID message_id = 1; // Message id should be unique in session
   google.protobuf.Timestamp timestamp = 2; // Message creation timestamp
-  bytes body_raw = 3;
+  bytes body_raw = 3 [deprecated = true];
+  RawMessage rawMessage = 6;
   repeated EventID attached_event_id = 4; // ids of events linked to this message group
   repeated MessageGroupItem message_item = 5; // May be absent.
 }
