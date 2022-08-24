@@ -93,6 +93,7 @@ message MessageGroupsSearchRequest {
   repeated Group message_group = 3;
   google.protobuf.BoolValue sort = 4;
   bool raw_only = 5;
+  bool keep_open = 6;
 }
 
 message MessageStreamsRequest {
