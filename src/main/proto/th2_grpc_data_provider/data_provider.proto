@@ -267,7 +267,14 @@ message MessageSearchRequest {
 }
 
 message MessageGroupsSearchResponse {
-  repeated MessageSearchResponse messages = 1;
+  oneof data {
+    MessageGroupCollectionResponse collection = 1;
+    MessageStreamPointers message_stream_pointers = 2;
+  }
+}
+
+message MessageGroupCollectionResponse {
+  repeated MessageGroupResponse messages = 1;
 }
 
 message MessageSearchResponse {
