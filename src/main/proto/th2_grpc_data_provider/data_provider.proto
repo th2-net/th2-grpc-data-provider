@@ -53,6 +53,10 @@ service DataProvider {
   rpc searchEvents (EventSearchRequest) returns (stream EventSearchResponse) {
   }
 
+  rpc loadCradleMessageGroups (CradleMessageGroupsRequest) returns (CradleMessageGroupsResponse) {
+
+  }
+
   /*
   Searches for messages groups in specified timestamp
    */
@@ -84,10 +88,45 @@ service DataProvider {
   }
 }
 
-message MessageGroupsSearchRequest {
-  message Group {
-    string name = 1;
+message CradleMessageGroupsRequest {
+  google.protobuf.Timestamp start_timestamp = 1;
+  google.protobuf.Timestamp end_timestamp = 2;
+  repeated Group message_group = 3;
+  string routing_property_name = 4;
+  string routing_property_value = 5;
+  google.protobuf.BoolValue sort = 6;
+}
+
+message MessageStreamInfo {
+  // string group TODO: this field isn't required because session_alias is unique for Cradle
+  string session_alias = 1;
+  Direction direction = 2;
+
+  int64 number_of_messages = 3;
+  google.protobuf.Timestamp max_timestamp = 4;
+  google.protobuf.Timestamp min_timestamp = 5;
+  int64 max_sequence = 6;
+  int64 min_sequence = 7;
+}
+
+message MessageIntervalInfo {
+  google.protobuf.Timestamp start_timestamp = 1;
+  google.protobuf.Timestamp end_timestamp = 2;
+
+  repeated MessageStreamInfo messages_info = 3;
+}
+
+message CradleMessageGroupsResponse {
+  oneof kind {
+      MessageIntervalInfo message_interval_info = 1;
   }
+}
+
+message Group {
+  string name = 1;
+}
+
+message MessageGroupsSearchRequest {
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   repeated Group message_group = 3;
@@ -268,7 +307,7 @@ message MessageSearchRequest {
 
 message MessageGroupsSearchResponse {
   oneof data {
-    MessageGroupCollectionResponse collection = 1;
+    MessageGroupCollectionResponse collection = 1; //TODO: move to MessageSearchResponse
     MessageStreamPointers message_stream_pointers = 2;
   }
 }
