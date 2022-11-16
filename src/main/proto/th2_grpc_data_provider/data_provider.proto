@@ -92,8 +92,7 @@ message CradleMessageGroupsRequest {
   google.protobuf.Timestamp start_timestamp = 1;
   google.protobuf.Timestamp end_timestamp = 2;
   repeated Group message_group = 3;
-  string routing_property_name = 4;
-  string routing_property_value = 5;
+  string external_user_queue = 4;
   google.protobuf.BoolValue sort = 6;
 }
 
