@@ -57,6 +57,10 @@ service DataProvider {
   rpc searchEvents (EventSearchRequest) returns (stream EventSearchResponse) {
   }
 
+  rpc loadCradleMessageGroups (CradleMessageGroupsRequest) returns (CradleMessageGroupsResponse) {
+
+  }
+
   /*
   Searches for messages groups in specified timestamp
    */
@@ -88,6 +92,14 @@ service DataProvider {
   }
 }
 
+message CradleMessageGroupsRequest {
+  google.protobuf.Timestamp start_timestamp = 1;
+  google.protobuf.Timestamp end_timestamp = 2;
+  repeated Group message_group = 3;
+  string external_user_queue = 4;
+  google.protobuf.BoolValue sort = 6;
+}
+
 // The scope for events to request
 message EventScope {
   string name = 1;
@@ -95,6 +107,35 @@ message EventScope {
 
 message BookId {
   // Name of the book to request data from
+  string name = 1;
+}
+
+message MessageStreamInfo {
+  // string group TODO: this field isn't required because session_alias is unique for Cradle
+  string session_alias = 1;
+  Direction direction = 2;
+
+  int64 number_of_messages = 3;
+  google.protobuf.Timestamp max_timestamp = 4;
+  google.protobuf.Timestamp min_timestamp = 5;
+  int64 max_sequence = 6;
+  int64 min_sequence = 7;
+}
+
+message MessageIntervalInfo {
+  google.protobuf.Timestamp start_timestamp = 1;
+  google.protobuf.Timestamp end_timestamp = 2;
+
+  repeated MessageStreamInfo messages_info = 3;
+}
+
+message CradleMessageGroupsResponse {
+  oneof kind {
+      MessageIntervalInfo message_interval_info = 1;
+  }
+}
+
+message Group {
   string name = 1;
 }
 
@@ -284,6 +325,17 @@ message MessageSearchRequest {
   google.protobuf.BoolValue attached_events = 9; // If true, it will additionally load attachedEventsIds. Set by default to false.
   repeated string response_formats = 10; // List of possible response formats (e.g. PARSED or BASE_64)
   BookId book_id = 11;
+}
+
+message MessageGroupsSearchResponse {
+  oneof data {
+    MessageGroupCollectionResponse collection = 1; //TODO: move to MessageSearchResponse
+    MessageStreamPointers message_stream_pointers = 2;
+  }
+}
+
+message MessageGroupCollectionResponse {
+  repeated MessageGroupResponse messages = 1;
 }
 
 message MessageSearchResponse {
