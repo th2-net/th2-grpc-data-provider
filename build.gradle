@@ -14,9 +14,9 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 ext {
-    grpcVersion                 = '1.32.1'
+    grpcVersion                 = '1.50.2'
     protobufVersion             = '3.13.0'
-    serviceGeneratorVersion     = '3.1.12'
+    serviceGeneratorVersion     = '3.2.0'
 
 
     genDir              = file("${project.rootDir}/src/gen")
@@ -34,16 +34,16 @@ repositories {
             url 'https://s01.oss.sonatype.org/content/repositories/releases/'
     }
 
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
         resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
     }
 }
 
 dependencies {
-    api platform('com.exactpro.th2:bom:3.0.0')
+    api platform('com.exactpro.th2:bom:4.1.0')
 
-    api "com.exactpro.th2:grpc-common:3.4.0"
+    api "com.exactpro.th2:grpc-common:3.13.0"
 
     api "com.google.protobuf:protobuf-java-util"
     api "io.grpc:grpc-stub"
@@ -115,13 +115,14 @@ tasks.withType(PublishToMavenRepository) {
         (repository == publishing.repositories.localRepo)
     }
 }
-tasks.withType(Sign) {
-    onlyIf { project.hasProperty('signingKey') &&
-        project.hasProperty('signingPassword')
+tasks.withType(Sign).configureEach {
+    onlyIf {
+        project.hasProperty('signingKey') &&
+                project.hasProperty('signingPassword')
     }
 }
 // disable running task 'initializeSonatypeStagingRepository' on a gitlab
-tasks.whenTaskAdded {task ->
+tasks.configureEach {task ->
     if(task.name.equals('initializeSonatypeStagingRepository') &&
         !(project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword'))
     ) {
@@ -195,4 +196,10 @@ signing {
 
 clean {
     delete genDir
+}
+
+configurations {
+    compileClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
 }
