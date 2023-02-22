@@ -5,6 +5,7 @@ plugins {
     id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
     id 'signing'
     id "com.google.protobuf" version "0.8.15"
+    id "org.owasp.dependencycheck" version "8.1.0"
 }
 
 group = 'com.exactpro.th2'
@@ -40,8 +41,14 @@ repositories {
     }
 }
 
+configurations {
+    compileClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
 dependencies {
-    api platform('com.exactpro.th2:bom:4.1.0')
+    api platform('com.exactpro.th2:bom:4.2.0')
 
     api "com.exactpro.th2:grpc-common:3.13.0"
 
