@@ -205,8 +205,13 @@ clean {
     delete genDir
 }
 
-configurations {
-    compileClasspath {
-        resolutionStrategy.activateDependencyLocking()
+dependencyCheck {
+    formats=['SARIF', 'JSON', 'HTML']
+    failBuildOnCVSS=5
+
+    analyzers {
+        assemblyEnabled = false
+        nugetconfEnabled = false
+        nodeEnabled = false
     }
 }
