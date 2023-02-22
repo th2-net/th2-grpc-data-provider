@@ -5,6 +5,7 @@ plugins {
     id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
     id 'signing'
     id "com.google.protobuf" version "0.8.15"
+    id "org.owasp.dependencycheck" version "8.1.0"
 }
 
 group = 'com.exactpro.th2'
@@ -16,7 +17,7 @@ targetCompatibility = 11
 ext {
     grpcVersion                 = '1.50.2'
     protobufVersion             = '3.13.0'
-    serviceGeneratorVersion     = '3.2.0'
+    serviceGeneratorVersion     = '3.3.1'
 
 
     genDir              = file("${project.rootDir}/src/gen")
@@ -40,8 +41,14 @@ repositories {
     }
 }
 
+configurations {
+    compileClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
 dependencies {
-    api platform('com.exactpro.th2:bom:4.1.0')
+    api platform('com.exactpro.th2:bom:4.2.0')
 
     api "com.exactpro.th2:grpc-common:3.13.0"
 
@@ -53,7 +60,7 @@ dependencies {
 
     implementation "javax.annotation:javax.annotation-api:1.3.2"
 
-    api "com.exactpro.th2:grpc-service-generator:${serviceGeneratorVersion}"
+    implementation "com.exactpro.th2:grpc-service-generator:${serviceGeneratorVersion}"
 }
 
 sourceSets {
@@ -198,8 +205,13 @@ clean {
     delete genDir
 }
 
-configurations {
-    compileClasspath {
-        resolutionStrategy.activateDependencyLocking()
+dependencyCheck {
+    formats=['SARIF', 'JSON', 'HTML']
+    failBuildOnCVSS=5
+
+    analyzers {
+        assemblyEnabled = false
+        nugetconfEnabled = false
+        nodeEnabled = false
     }
 }
