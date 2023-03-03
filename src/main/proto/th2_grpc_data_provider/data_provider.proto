@@ -246,6 +246,7 @@ message MessageSearchRequest {
 
   repeated Filter filter = 8; // List of message search filters. (See 'search/sse/message' HTTP method https://github.com/th2-net/th2-rpt-data-provider)
   google.protobuf.BoolValue attached_events = 9; // If true, it will additionally load attachedEventsIds. Set by default to false.
+  repeated string responseFormats = 10; // List of possible response formats (e.g. PARSED or BASE_64)
 }
 
 message MessageSearchResponse {
