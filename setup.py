@@ -1,4 +1,4 @@
-#   Copyright 2020-2021 Exactpro (Exactpro Systems Limited)
+#   Copyright 2020-2023 Exactpro (Exactpro Systems Limited)
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -108,6 +108,8 @@ packages = [''] + find_packages(include=[package_name, f'{package_name}.*'])
 package_data = {'': ['package_info.json'],
                 **dict.fromkeys(packages[1:], ['*.proto', 'py.typed', '*.pyi'])}
 
+with open('requirements.txt', 'r') as file:
+    requirements = [line.strip() for line in file.readlines() if not line.startswith('#') and line != '\n']
 
 setup(
     name=package_name,
@@ -120,9 +122,7 @@ setup(
     url='https://github.com/th2-net/th2-data-provider',
     license='Apache License 2.0',
     python_requires='>=3.7',
-    install_requires=[
-        'th2-grpc-common~=3.8.0'
-    ],
+    install_requires=requirements,
     packages=packages,
     package_data=package_data,
     cmdclass={
