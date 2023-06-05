@@ -1,4 +1,4 @@
-# th2 gRPC Data Provider library (1.2.3)
+# th2 gRPC Data Provider library (1.3.0)
 
 This library contains proto messages and `DataProvider` service with RPC methods that are used in [th2 data provider](https://github.com/th2-net/th2-rpt-data-provider "th2-rpt-data-provider"). See [data_provider.proto](src/main/proto/th2_grpc_data_provider/data_provider.proto "data_provider_template.proto") file for details. <br>
 Tool generates code from `.proto` files and uploads built packages (`.proto` files and generated code) to specified repositories.
